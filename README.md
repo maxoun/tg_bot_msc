@@ -70,7 +70,7 @@ OPENAI_API_BASE=https://api.openai.com/v1
 
 # 2) Локальный vLLM-сервер
 # OPENAI_API_KEY=
-OPENAI_API_BASE=http://vllm:8000/v1
+OPENAI_API_BASE=http://localhost:8000/v1
 
 # Модель по умолчанию
 OPENAI_MODEL_NAME=Qwen/Qwen3-8B-AWQ
