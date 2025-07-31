@@ -1,0 +1,21 @@
+# Dockerfile.vllm
+# Берём образ PyTorch с CUDA и cuDNN
+FROM pytorch/pytorch:2.1.0-cuda11.8-cudnn8-runtime
+
+# Устанавливаем инструменты для компиляции (Triton внутри vLLM нуждается в компиляторе)
+RUN apt-get update && \
+    apt-get install -y --no-install-recommends \
+      build-essential clang llvm libtinfo5 python3-dev && \
+    rm -rf /var/lib/apt/lists/*
+
+# Обновляем pip и ставим vllm с HTTP-сервером OpenAI-совместимым
+RUN python3 -m pip install --upgrade pip && \
+    pip install --no-cache-dir "vllm[serve]"
+
+WORKDIR /vllm
+
+# Копируем только конфиг vLLM
+COPY config.yaml /vllm/config.yaml
+
+# Запускаем vLLM-сервер
+CMD ["vllm", "serve", "--config", "/vllm/config.yaml"]
